@@ -4,29 +4,60 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
   <title>MediaRater | {% block title %}{% endblock %}</title>
 </head>
-<body>
-    <nav class="py-6 px-12 flex items-center justify-between bg-purple-700">
-        <a href="{% url 'core:index' %}" class="text-2xl text-white font-bold">MediaRater</a>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="bg-purple-700 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="{% url 'core:index' %}" class="flex items-center">
+                        <i class="fas fa-star text-yellow-400 text-2xl mr-2"></i>
+                        <span class="text-2xl text-white font-bold">MediaRater</span>
+                    </a>
+                </div>
 
-        <div class="space-x-6">
-            {% if request.user.is_authenticated %}
-                <a href="{% url 'link:add_link' %}" class="py-4 px-8 bg-purple-900 text-white">Add link</a>
-            {% else %}
-                <a href="{% url 'user:login' %}" class="py-4 px-8 bg-purple-900 text-white">Log in</a>
-
-                <a href="{% url 'user:signup' %}" class="py-4 px-8 bg-purple-500 text-white">Sign up</a>
-            {% endif %}
+                <div class="flex items-center space-x-4">
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'link:add_link' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-purple-900 hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-150">
+                            <i class="fas fa-plus mr-2"></i>
+                            Add link
+                        </a>
+                        <form action="{% url 'user:logout' %}" method="post" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-purple-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-150">
+                                <i class="fas fa-sign-out-alt mr-2"></i>
+                                Log out
+                            </button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'user:login' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-purple-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-150">
+                            Log in
+                        </a>
+                        <a href="{% url 'user:signup' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-purple-900 hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-150">
+                            Sign up
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </nav>
 
-    <main class="py-6 px-12">
+    <main class="py-8">
         {% block content %}
         {% endblock %}
     </main>
 
-    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="f24cd73f-6f81-4000-99ab-325d88c00f16"  type="text/javascript"></script>
+    <footer class="bg-white mt-auto py-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-gray-500 text-sm">
+                © {% now "Y" %} MediaRater. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="f24cd73f-6f81-4000-99ab-325d88c00f16" type="text/javascript"></script>
 </body>
 </html>

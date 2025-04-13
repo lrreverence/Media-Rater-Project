@@ -16,6 +16,10 @@ class ReviewForm(forms.ModelForm):
         model = Review
         fields = ('rating', 'content',)
         widgets = {
-            'rating': forms.NumberInput(attrs={'class':'w-full mt-2 py-4 px-6 bg-slate-100 border border-slate-300'}),
+            'rating': forms.NumberInput(attrs={
+                'class': 'w-full mt-2 py-4 px-6 bg-slate-100 border border-slate-300',
+                'min': '1',
+                'max': '5'
+            }),
             'content': forms.Textarea(attrs={'class':'w-full mt-2 py-4 px-6 bg-slate-100 border border-slate-300'})
         }

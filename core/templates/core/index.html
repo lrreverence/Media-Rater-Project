@@ -3,21 +3,41 @@
 {% block title %}Welcome{% endblock %}
 
 {% block content %}
-    <div class="grid grid-cols-10">
-        <div class="col-span-3 py-6 px-8 font-bold bg-purple-700 text-white">Name</div>
-        <div class="col-span-6 py-6 px-8 font-bold bg-purple-700 text-white">Url</div>
-        <div class="col-span-1 py-6 px-8 font-bold bg-purple-700 text-white">Rating</div>
-    </div>
+    <div class="max-w-7xl mx-auto">
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <div class="grid grid-cols-10 border-b border-gray-200">
+                <div class="col-span-3 py-4 px-6 bg-purple-700 text-white font-semibold">Name</div>
+                <div class="col-span-6 py-4 px-6 bg-purple-700 text-white font-semibold">URL</div>
+                <div class="col-span-1 py-4 px-6 bg-purple-700 text-white font-semibold text-center">Rating</div>
+            </div>
 
-    {% for link in links %}
-    <div class="grid grid-cols-10">
-        <div class="col-span-3 py-3 px-8 ">
-            <a href="{% url 'link:detail' link.pk %}">{{ link.name }}</a>
+            {% for link in links %}
+            <div class="grid grid-cols-10 border-b border-gray-100 hover:bg-purple-50 transition-colors duration-150">
+                <div class="col-span-3 py-4 px-6">
+                    <a href="{% url 'link:detail' link.pk %}" class="text-purple-700 hover:text-purple-900 font-medium">
+                        {{ link.name }}
+                    </a>
+                </div>
+                <div class="col-span-6 py-4 px-6 truncate">
+                    <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-purple-700 hover:underline">
+                        {{ link.url }}
+                    </a>
+                </div>
+                <div class="col-span-1 py-4 px-6">
+                    <div class="flex justify-center">
+                        <span class="inline-flex items-center justify-center px-3 py-1 rounded-full {% if link.get_rating >= 4 %}bg-green-100 text-green-800{% elif link.get_rating >= 2.5 %}bg-yellow-100 text-yellow-800{% else %}bg-red-100 text-red-800{% endif %}">
+                            {{link.get_rating|floatformat:1}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
         </div>
-        <div class="col-span-6 py-3 px-8 ">{{ link.url }}</div>
-        <div class="col-span-1 py-3 px-8 ">{{link.get_rating}}</div>
+
+        {% if not links %}
+        <div class="text-center py-12">
+            <p class="text-gray-500">No media entries yet. {% if request.user.is_authenticated %}Add your first one!{% else %}Sign up to start rating media.{% endif %}</p>
+        </div>
+        {% endif %}
     </div>
-
-    {% endfor %}
-
 {% endblock %}
